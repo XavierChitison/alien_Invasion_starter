@@ -2,7 +2,7 @@ import sys
 import pygame
 from Settings import Settings
 from ship import Ship
-
+from arsenal import ShipArsenal
 
 class AlienInvasion:
     def __init__(self):
@@ -20,13 +20,22 @@ class AlienInvasion:
         self.running = True
         self.clock = pygame.time.Clock()
 
-        self.ship = Ship(self)
+        pygame.mixer.init()
+        print("Laser sound path:", self.settings.laser_sound)
+        print("File exists:", self.settings.laser_sound.exists())
+        self.laser_sound = pygame.mixer.Sound(str(self.settings.laser_sound))
+        self.laser_sound.set_volume(1)  # Set the volume to 100%
+
+        
+        self.arsenal = ShipArsenal(self)
+        self.ship = Ship(self, self.arsenal)
 
     def run_game(self):
         # Game Loop
         while self.running:
             self._check_events()
             self.ship.update()
+            self.arsenal.update_arsenal()
             self._updated_screen()
             # Limit the frame rate to 60 FPS
             self.clock.tick(self.settings.FPS)
@@ -34,6 +43,7 @@ class AlienInvasion:
     def _updated_screen(self):
         self.screen.blit(self.bg, (0, 0))
         self.ship.draw()
+        self.arsenal.draw()
         pygame.display.flip()
 
     def _check_events(self):
@@ -60,6 +70,11 @@ class AlienInvasion:
         self.ship.moving_right = True
      elif event.key == pygame.K_LEFT:
         self.ship.moving_left = True
+     elif event.key == pygame.K_SPACE:
+       if self.ship.fire():
+            # Play the laser sound
+            self.laser_sound.play()
+            self.laser_sound.fadeout(500)  # Fade out the sound over 500 milliseconds
      elif event.key == pygame.K_q:
         self.running = False
         pygame.quit()
