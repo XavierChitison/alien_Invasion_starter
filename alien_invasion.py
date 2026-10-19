@@ -1,7 +1,7 @@
 import sys
 import pygame
 from Settings import Settings
-
+from ship import Ship
 
 class AlienInvasion:
     def __init__(self):
@@ -13,6 +13,8 @@ class AlienInvasion:
 
         self.bg = pygame.image.load(self.settings.bg_file)
         self.bg = pygame.transform.scale(self.bg, (self.settings.screen_width, self.settings.screen_height))
+
+        self.ship = Ship(self)
 
         self.running = True
         self.clock = pygame.time.Clock()
@@ -28,6 +30,7 @@ class AlienInvasion:
                     sys.exit()
                     
             self.screen.blit(self.bg, (0, 0))
+            self.ship.draw()
             pygame.display.flip()
             self.clock.tick(60)  # Limit the frame rate to 60 FPS
 

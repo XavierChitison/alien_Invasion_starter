@@ -10,3 +10,7 @@ class Settings:
         self.screen_height: int = 800
         self.FPS: int = 60
         self.bg_file = Path.cwd() / 'Assets' / 'images' / 'Starbasesnow.png'
+
+        self.ship_file = Path.cwd() / 'Assets' / 'images' / 'ship2(no bg).png'
+        self.ship_width: int = 100
+        self.ship_height: int = 100
