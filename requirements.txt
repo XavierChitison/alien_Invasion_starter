@@ -1,1 +1,2 @@
+pathlib==26.2.1
 pygame==2.6.1
