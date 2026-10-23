@@ -39,7 +39,7 @@ class AlienInvasion:
         while self.running:
             self._check_events()
             self.ship.update()
-            # self.aliens.update()
+            self.aliens.update_fleet()
             self.arsenal.update_arsenal()
             self._updated_screen()
             # Limit the frame rate to 60 FPS

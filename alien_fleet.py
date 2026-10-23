@@ -91,8 +91,24 @@ class AlienFleet:
 
 
     def create_alien(self, current_x: int, current_y: int):
-        new_alien = Alien(self.game, current_x, current_y)
+        new_alien = Alien(self, current_x, current_y)
         self.aliens.add(new_alien)
+
+    def _check_fleet_edges(self):
+        alien: 'Alien'
+        for alien in self.aliens:
+            if alien.check_edges():
+                self._drop_alien_fleet()
+                self.fleet_direction *= -1
+                break
+
+    def _drop_alien_fleet (self):
+        for alien in self.aliens:
+            alien.y += self.fleet_drop_speed
+            alien.rect.y = alien.y
+    def update_fleet(self):
+        self._check_fleet_edges()  # Check if any alien has reached the edge of the screen
+        self.aliens.update()  # Update the position of the fleet based on the current direction
 
 
     def draw(self):
