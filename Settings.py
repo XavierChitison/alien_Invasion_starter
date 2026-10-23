@@ -24,3 +24,9 @@ class Settings:
         self.bullet_amount: int = 5
         self.bullet_speed: int = 7
         self.bullets_allowed: int = 5
+
+
+        self.alien_file = Path.cwd() / 'Assets' / 'images' / 'enemy_4.png'
+        self.alien_width: int = 40
+        self.alien_height: int = 40
+        self.alien_speed: int = 5

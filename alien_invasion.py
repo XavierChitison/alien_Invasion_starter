@@ -3,6 +3,7 @@ import pygame
 from Settings import Settings
 from ship import Ship
 from arsenal import ShipArsenal
+from alien import Alien
 
 class AlienInvasion:
     def __init__(self):
@@ -29,12 +30,14 @@ class AlienInvasion:
         
         self.arsenal = ShipArsenal(self)
         self.ship = Ship(self, self.arsenal)
+        self.aliens = Alien(self, 10, 10)
 
     def run_game(self):
         # Game Loop
         while self.running:
             self._check_events()
             self.ship.update()
+            self.aliens.update()
             self.arsenal.update_arsenal()
             self._updated_screen()
             # Limit the frame rate to 60 FPS
@@ -43,6 +46,7 @@ class AlienInvasion:
     def _updated_screen(self):
         self.screen.blit(self.bg, (0, 0))
         self.ship.draw()
+        self.aliens.draw_alien()
         self.arsenal.draw()
         pygame.display.flip()
 
