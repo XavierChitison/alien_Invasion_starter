@@ -4,6 +4,7 @@ from Settings import Settings
 from ship import Ship
 from arsenal import ShipArsenal
 from alien_fleet import AlienFleet
+from game_stats import GameStats
 
 
 class AlienInvasion:
@@ -20,6 +21,8 @@ class AlienInvasion:
             self.bg, (self.settings.screen_width, self.settings.screen_height))
 
         self.running = True
+        self.stats = GameStats(self.settings.ship_lives)
+        self.font = pygame.font.Font(None, 36)
         self.clock = pygame.time.Clock()
 
         pygame.mixer.init()
@@ -37,16 +40,20 @@ class AlienInvasion:
         # Game Loop
         while self.running:
             self._check_events()
-            self.ship.update()
-            self.aliens.update_fleet()
-            self.arsenal.update_arsenal()
-            self._check_collisions()
+            if self.stats.game_active:
+                self.ship.update()
+                self.aliens.update_fleet()
+                self.arsenal.update_arsenal()
+                self._check_collisions()
             self._updated_screen()
             # Limit the frame rate to 60 FPS
             self.clock.tick(self.settings.FPS)
 
     def _check_collisions(self):
+        if not self.stats.game_active:
+            return
         bullet_hits = self.aliens.check_collisions(self.arsenal.arsenal)
+        self.stats.score += len(bullet_hits) * 100
         ship_hit = self.ship.check_collisions(self.aliens.aliens)
         if bullet_hits or ship_hit:
             self.impact_sound.play()
@@ -54,10 +61,17 @@ class AlienInvasion:
         if (ship_hit
                 or any(alien.rect.bottom >= self.screen.get_rect().bottom
                        for alien in self.aliens.aliens)):
-            self._reset_level()
+            self.stats.lose_life()
+            if not self.stats.game_active:
+                self.arsenal.arsenal.empty()
+                self.ship.moving_left = False
+                self.ship.moving_right = False
+            else:
+                self._reset_level()
             return
 
         if not self.aliens.aliens:
+            self.stats.level += 1
             self.arsenal.arsenal.empty()
             self.aliens.create_fleet()
 
@@ -73,6 +87,13 @@ class AlienInvasion:
         self.ship.draw()
         self.aliens.draw()
         self.arsenal.draw()
+        lives_text = self.font.render(
+            f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
+        self.screen.blit(lives_text, (10, 10))
+        if not self.stats.game_active:
+            message = self.font.render(
+                "Game Over - Press R to restart", True, (255, 255, 255), (0, 0, 0))
+            self.screen.blit(message, message.get_rect(center=self.screen.get_rect().center))
         pygame.display.flip()
 
     def _check_events(self):
@@ -93,6 +114,12 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _check_keydown_events(self, event):
+        if not self.stats.game_active and event.key == pygame.K_r:
+            self.stats.reset_stats()
+            self._reset_level()
+            return
+        if not self.stats.game_active and event.key != pygame.K_q:
+            return
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:

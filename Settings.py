@@ -14,6 +14,7 @@ class Settings:
         self.ship_width: int = 100
         self.ship_height: int = 100
         self.ship_speed: int = 5
+        self.ship_lives: int = 3
 
         self.bullet_file = Path(__file__).resolve().parent / 'Assets' / 'images' / 'laserBlast.png'
         self.laser_sound = Path(__file__).resolve().parent / 'Assets' / 'sound' / 'laser.mp3'
