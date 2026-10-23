@@ -27,3 +27,4 @@ class Settings:
         self.alien_width: int = 40
         self.alien_height: int = 40
         self.fleet_speed: int = 2
+        self.fleet_direction: int = 1  # 1 represents right; -1 represents left
