@@ -3,7 +3,7 @@ import pygame
 from Settings import Settings
 from ship import Ship
 from arsenal import ShipArsenal
-from alien import Alien
+from alien_fleet import AlienFleet
 
 
 class AlienInvasion:
@@ -29,15 +29,17 @@ class AlienInvasion:
         self.laser_sound.set_volume(1)  # Set the volume to 100%
 
         self.arsenal = ShipArsenal(self)
+        self.aliens = AlienFleet(self)
+        self.aliens.create_fleet()
         self.ship = Ship(self, self.arsenal)
-        self.aliens = Alien(self, 10, 10)
+        
 
     def run_game(self):
         # Game Loop
         while self.running:
             self._check_events()
             self.ship.update()
-            self.aliens.update()
+            # self.aliens.update()
             self.arsenal.update_arsenal()
             self._updated_screen()
             # Limit the frame rate to 60 FPS
@@ -46,7 +48,7 @@ class AlienInvasion:
     def _updated_screen(self):
         self.screen.blit(self.bg, (0, 0))
         self.ship.draw()
-        self.aliens.draw_alien()
+        self.aliens.draw()
         self.arsenal.draw()
         pygame.display.flip()
 
