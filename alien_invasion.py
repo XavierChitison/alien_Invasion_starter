@@ -5,6 +5,7 @@ from ship import Ship
 from arsenal import ShipArsenal
 from alien import Alien
 
+
 class AlienInvasion:
     def __init__(self):
         pygame.init()
@@ -27,7 +28,6 @@ class AlienInvasion:
         self.laser_sound = pygame.mixer.Sound(str(self.settings.laser_sound))
         self.laser_sound.set_volume(1)  # Set the volume to 100%
 
-        
         self.arsenal = ShipArsenal(self)
         self.ship = Ship(self, self.arsenal)
         self.aliens = Alien(self, 10, 10)
@@ -61,28 +61,27 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
-
     def _check_keyup_events(self, event):
-     if event.key == pygame.K_RIGHT:
-        self.ship.moving_right = False
-     elif event.key == pygame.K_LEFT:
-        self.ship.moving_left = False
-
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _check_keydown_events(self, event):
-     if event.key == pygame.K_RIGHT:
-        self.ship.moving_right = True
-     elif event.key == pygame.K_LEFT:
-        self.ship.moving_left = True
-     elif event.key == pygame.K_SPACE:
-       if self.ship.fire():
-            # Play the laser sound
-            self.laser_sound.play()
-            self.laser_sound.fadeout(500)  # Fade out the sound over 500 milliseconds
-     elif event.key == pygame.K_q:
-        self.running = False
-        pygame.quit()
-        sys.exit()
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        elif event.key == pygame.K_SPACE:
+            if self.ship.fire():
+                # Play the laser sound
+                self.laser_sound.play()
+                # Fade out the sound over 500 milliseconds
+                self.laser_sound.fadeout(500)
+        elif event.key == pygame.K_q:
+            self.running = False
+            pygame.quit()
+            sys.exit()
 
 
 if __name__ == '__main__':
