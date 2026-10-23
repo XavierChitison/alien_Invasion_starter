@@ -27,12 +27,11 @@ class AlienInvasion:
         print("File exists:", self.settings.laser_sound.exists())
         self.laser_sound = pygame.mixer.Sound(str(self.settings.laser_sound))
         self.laser_sound.set_volume(1)  # Set the volume to 100%
+        self.impact_sound = pygame.mixer.Sound(str(self.settings.impact_sound))
 
         self.arsenal = ShipArsenal(self)
         self.aliens = AlienFleet(self)
-        self.aliens.create_fleet()
         self.ship = Ship(self, self.arsenal)
-        
 
     def run_game(self):
         # Game Loop
@@ -41,9 +40,33 @@ class AlienInvasion:
             self.ship.update()
             self.aliens.update_fleet()
             self.arsenal.update_arsenal()
+            self._check_collisions()
             self._updated_screen()
             # Limit the frame rate to 60 FPS
             self.clock.tick(self.settings.FPS)
+
+    def _check_collisions(self):
+        bullet_hits = self.aliens.check_collisions(self.arsenal.arsenal)
+        ship_hit = self.ship.check_collisions(self.aliens.aliens)
+        if bullet_hits or ship_hit:
+            self.impact_sound.play()
+
+        if (ship_hit
+                or any(alien.rect.bottom >= self.screen.get_rect().bottom
+                       for alien in self.aliens.aliens)):
+            self._reset_level()
+            return
+
+        if not self.aliens.aliens:
+            self.arsenal.arsenal.empty()
+            self.aliens.create_fleet()
+
+    def _reset_level(self):
+        self.arsenal.arsenal.empty()
+        self.aliens.create_fleet()
+        self.ship._center_ship()
+        self.ship.moving_left = False
+        self.ship.moving_right = False
 
     def _updated_screen(self):
         self.screen.blit(self.bg, (0, 0))
