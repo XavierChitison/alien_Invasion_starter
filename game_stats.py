@@ -6,13 +6,13 @@ class GameStats:
         self.reset_stats()
 
     def reset_stats(self):
-        # Start a fresh game with the configured number of lives.
         self.lives_remaining = self.ship_limit
         self.score = 0
         self.level = 1
         self.game_active = True
 
     def lose_life(self):
-        if self.game_active:
-            self.lives_remaining = max(0, self.lives_remaining - 1)
-            self.game_active = self.lives_remaining > 0
+        if self.lives_remaining > 0:
+            self.lives_remaining -= 1
+        if self.lives_remaining == 0:
+            self.game_active = False
