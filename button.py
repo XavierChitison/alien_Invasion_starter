@@ -1,30 +1,18 @@
 import pygame
 
-
-class Button:
-    """A centered button with configurable appearance and text."""
-
+class Button: 
     def __init__(self, game, msg):
         self.screen = game.screen
-        self.settings = game.settings
-        self.button_color = self.settings.button_color
-        self.text_color = self.settings.button_text_color
-        self.font = pygame.font.Font(
-            self.settings.font_name, self.settings.button_font_size)
-        self.rect = pygame.Rect(
-            0, 0, self.settings.button_width, self.settings.button_height)
+        settings = game.settings
+        self.color = settings.button_color
+        self.font = pygame.font.Font(settings.font_name, settings.button_font_size)
+        self.rect = pygame.Rect(0, 0, settings.button_width, settings.button_height)
         self.rect.center = self.screen.get_rect().center
-        self._prep_msg(msg)
-
-    def _prep_msg(self, msg):
-        """Render a label for this button."""
-        self.msg_image = self.font.render(msg, True, self.text_color)
-        self.msg_image_rect = self.msg_image.get_rect(center=self.rect.center)
+        self.msg_image = self.font.render(msg, True, settings.button_text_color)
 
     def draw_button(self):
-        pygame.draw.rect(self.screen, self.button_color, self.rect)
-        self.msg_image_rect.center = self.rect.center
-        self.screen.blit(self.msg_image, self.msg_image_rect)
+        pygame.draw.rect(self.screen, self.color, self.rect, border_radius=10)
+        self.screen.blit(self.msg_image, self.msg_image.get_rect(center=self.rect.center))
 
     def is_clicked(self, position):
         return self.rect.collidepoint(position)
