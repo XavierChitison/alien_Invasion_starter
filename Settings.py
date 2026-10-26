@@ -8,6 +8,15 @@ class Settings:
         self.screen_width: int = 1200
         self.screen_height: int = 800
         self.FPS: int = 60
+
+        # Shared font and button appearance.
+        self.font_name = None  # Use Pygame's default font.
+        self.font_size: int = 36
+        self.button_width: int = 240
+        self.button_height: int = 60
+        self.button_color = (25, 90, 140)
+        self.button_text_color = (255, 255, 255)
+        self.button_font_size: int = 40
         self.bg_file = Path(__file__).resolve().parent / 'Assets' / 'images' / 'Starbasesnow.png'
 
         self.ship_file = Path(__file__).resolve().parent / 'Assets' / 'images' / 'ship2(no bg).png'

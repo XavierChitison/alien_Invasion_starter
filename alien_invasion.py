@@ -22,7 +22,7 @@ class AlienInvasion:
 
         self.running = True
         self.stats = GameStats(self.settings.ship_lives)
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(self.settings.font_name, self.settings.font_size)
         self.clock = pygame.time.Clock()
 
         pygame.mixer.init()
