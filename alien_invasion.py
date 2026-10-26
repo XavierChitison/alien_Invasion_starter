@@ -5,6 +5,7 @@ from ship import Ship
 from arsenal import ShipArsenal
 from alien_fleet import AlienFleet
 from game_stats import GameStats
+from button import Button
 
 
 class AlienInvasion:
@@ -22,14 +23,10 @@ class AlienInvasion:
 
         self.running = True
         self.stats = GameStats(self.settings.ship_lives)
-<<<<<<< HEAD
         self.stats.game_active = False
         self.waiting_to_start = True
         self.play_button = Button(self, "Play")
-        self.font = pygame.font.Font(self.settings.font_name, self.settings.font_size)
-=======
         self.font = pygame.font.Font(None, 36)
->>>>>>> parent of 03a4179 (P3- Created Button Class and settings for button and fonts)
         self.clock = pygame.time.Clock()
 
         pygame.mixer.init()
@@ -97,7 +94,9 @@ class AlienInvasion:
         lives_text = self.font.render(
             f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
         self.screen.blit(lives_text, (10, 10))
-        if not self.stats.game_active:
+        if self.waiting_to_start:
+            self.play_button.draw_button()
+        elif not self.stats.game_active:
             message = self.font.render(
                 "Game Over - Press R to restart", True, (255, 255, 255), (0, 0, 0))
             self.screen.blit(message, message.get_rect(center=self.screen.get_rect().center))
@@ -113,6 +112,14 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.waiting_to_start and self.play_button.is_clicked(event.pos):
+                    self._start_game()
+
+    def _start_game(self):
+        self.stats.reset_stats()
+        self._reset_level()
+        self.waiting_to_start = False
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -121,9 +128,9 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _check_keydown_events(self, event):
-        if not self.stats.game_active and event.key == pygame.K_r:
-            self.stats.reset_stats()
-            self._reset_level()
+        if (not self.stats.game_active and not self.waiting_to_start
+                and event.key == pygame.K_r):
+            self._start_game()
             return
         if not self.stats.game_active and event.key != pygame.K_q:
             return
