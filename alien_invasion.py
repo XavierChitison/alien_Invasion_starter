@@ -26,7 +26,7 @@ class AlienInvasion:
         self.stats.game_active = False
         self.waiting_to_start = True
         self.play_button = Button(self, "Play")
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(self.settings.font_name, self.settings.font_size)
         self.clock = pygame.time.Clock()
 
         pygame.mixer.init()
