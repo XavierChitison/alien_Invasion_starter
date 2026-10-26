@@ -8,6 +8,12 @@ class Settings:
         self.screen_width: int = 1200
         self.screen_height: int = 800
         self.FPS: int = 60
+        self.font_name = None
+        self.button_font_size = 40
+        self.button_width = 240
+        self.button_height = 60
+        self.button_color = (25, 90, 140)
+        self.button_text_color = (255, 255, 255)
         self.bg_file = Path(__file__).resolve().parent / 'Assets' / 'images' / 'Starbasesnow.png'
 
         self.ship_file = Path(__file__).resolve().parent / 'Assets' / 'images' / 'ship2(no bg).png'
