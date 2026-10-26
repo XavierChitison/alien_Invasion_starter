@@ -22,6 +22,7 @@ class AlienFleet:
     def create_fleet(self):
         self.aliens.empty()
         self.fleet_direction = self.settings.fleet_direction
+        self.fleet_drop_speed = self.settings.fleet_drop_speed
         alien_width = self.settings.alien_width
         alien_height = self.settings.alien_height
         screen_width = self.screen.get_rect().width

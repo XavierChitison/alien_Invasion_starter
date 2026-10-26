@@ -76,6 +76,7 @@ class AlienInvasion:
 
         if not self.aliens.aliens:
             self.stats.level += 1
+            self.settings.increase_difficulty()
             self.arsenal.arsenal.empty()
             self.aliens.create_fleet()
 
@@ -117,6 +118,7 @@ class AlienInvasion:
                     self._start_game()
 
     def _start_game(self):
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self._reset_level()
         self.waiting_to_start = False
