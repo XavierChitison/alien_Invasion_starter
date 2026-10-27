@@ -91,7 +91,7 @@ class AlienInvasion:
         self.aliens.draw()
         self.arsenal.draw()
         lives_text = self.font.render(
-            f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
+            f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score:,}   High Score: {self.stats.high_score:,}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
         self.screen.blit(lives_text, (10, 10))
         if self.stats.waiting_to_start:
             self.play_button.draw_button()
