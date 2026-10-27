@@ -23,8 +23,6 @@ class AlienInvasion:
 
         self.running = True
         self.stats = GameStats(self.settings.ship_lives)
-        self.stats.game_active = False
-        self.waiting_to_start = True
         self.play_button = Button(self, "Play")
         self.font = pygame.font.Font(None, 36)
         self.clock = pygame.time.Clock()
@@ -57,7 +55,7 @@ class AlienInvasion:
         if not self.stats.game_active:
             return
         bullet_hits = self.aliens.check_collisions(self.arsenal.arsenal)
-        self.stats.score += len(bullet_hits) * 100
+        self.stats.add_score(len(bullet_hits) * 100)
         ship_hit = self.ship.check_collisions(self.aliens.aliens)
         if bullet_hits or ship_hit:
             self.impact_sound.play()
@@ -75,7 +73,7 @@ class AlienInvasion:
             return
 
         if not self.aliens.aliens:
-            self.stats.level += 1
+            self.stats.advance_level()
             self.settings.increase_difficulty()
             self.arsenal.arsenal.empty()
             self.aliens.create_fleet()
@@ -95,7 +93,7 @@ class AlienInvasion:
         lives_text = self.font.render(
             f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
         self.screen.blit(lives_text, (10, 10))
-        if self.waiting_to_start:
+        if self.stats.waiting_to_start:
             self.play_button.draw_button()
         elif not self.stats.game_active:
             message = self.font.render(
@@ -114,14 +112,13 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if self.waiting_to_start and self.play_button.is_clicked(event.pos):
+                if self.stats.waiting_to_start and self.play_button.is_clicked(event.pos):
                     self._start_game()
 
     def _start_game(self):
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self._reset_level()
-        self.waiting_to_start = False
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -130,7 +127,7 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _check_keydown_events(self, event):
-        if (not self.stats.game_active and not self.waiting_to_start
+        if (not self.stats.game_active and not self.stats.waiting_to_start
                 and event.key == pygame.K_r):
             self._start_game()
             return
