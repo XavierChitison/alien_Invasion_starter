@@ -10,6 +10,7 @@ class Settings:
         self.screen_height: int = 800
         self.FPS: int = 60
         self.font_name = None
+        self.hud_height = 88
         self.button_font_size = 40
         self.button_width = 240
         self.button_height = 60

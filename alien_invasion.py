@@ -6,6 +6,7 @@ from arsenal import ShipArsenal
 from alien_fleet import AlienFleet
 from game_stats import GameStats
 from button import Button
+from hud import HUD
 
 
 class AlienInvasion:
@@ -37,6 +38,7 @@ class AlienInvasion:
         self.arsenal = ShipArsenal(self)
         self.aliens = AlienFleet(self)
         self.ship = Ship(self, self.arsenal)
+        self.hud = HUD(self)
 
     def run_game(self):
         # Game Loop
@@ -90,9 +92,7 @@ class AlienInvasion:
         self.ship.draw()
         self.aliens.draw()
         self.arsenal.draw()
-        lives_text = self.font.render(
-            f"Lives: {self.stats.lives_remaining}   Score: {self.stats.score:,}   High Score: {self.stats.high_score:,}   Level: {self.stats.level}", True, (255, 255, 255), (0, 0, 0))
-        self.screen.blit(lives_text, (10, 10))
+        self.hud.draw()
         if self.stats.waiting_to_start:
             self.play_button.draw_button()
         elif not self.stats.game_active:

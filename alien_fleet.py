@@ -48,7 +48,7 @@ class AlienFleet:
         fleet_horizontal_spacing = fleet_width * alien_width
         fleet_vertical_spacing = fleet_height * alien_height
         x_offset = (screen_width - fleet_horizontal_spacing) // 2
-        y_offset = 40
+        y_offset = self.settings.hud_height + 20
         return x_offset, y_offset
 
     def calculate_fleet_size(self, alien_width, screen_width, alien_height, screen_height):
