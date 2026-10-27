@@ -39,7 +39,7 @@ class Settings:
         self.initialize_dynamic_settings()
 
     def initialize_dynamic_settings(self):
-        """Set the starting movement values used to tune game difficulty."""
+        # """Set the starting movement values used to tune game difficulty."""
         self.ship_speed: float = 5.0
         self.bullet_speed: float = 7.0
         self.fleet_speed: float = 1.0
@@ -47,7 +47,7 @@ class Settings:
         self.fleet_drop_speed: int = 20  # Speed at which the fleet drops down when it hits an edge
 
     def increase_difficulty(self):
-        """Increase movement speeds when the player clears a level."""
+        # """Increase movement speeds when the player clears a level."""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.fleet_speed *= self.speedup_scale

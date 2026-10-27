@@ -2,7 +2,7 @@ import pygame
 
 
 class HUD:
-    """Display live game statistics, including the record loaded by GameStats."""
+    # Display live game statistics, including the record loaded by GameStats.
 
     def __init__(self, game):
         self.screen = game.screen
